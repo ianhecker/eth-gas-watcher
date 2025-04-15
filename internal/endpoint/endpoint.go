@@ -1,46 +1,7 @@
 package endpoint
 
-import (
-	"errors"
-	"io/ioutil"
-	"net/http"
-
-	"github.com/ianhecker/eth-gas-watcher/internal/desist"
-)
+import "github.com/ianhecker/eth-gas-watcher/internal/endpoint/feehistory"
 
 type Endpoint interface {
-	Get() ([]byte, error)
-}
-
-type Client struct {
-	URL string
-}
-
-func NewClient(url string) *Client {
-	return &Client{
-		URL: url,
-	}
-}
-
-func (c Client) Get() ([]byte, error) {
-	resp, err := http.Get(c.URL)
-	if err != nil {
-		return nil, desist.Error("could not get", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, desist.Error("status code not OK. Got", resp.StatusCode)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, desist.Error("could not read body", err)
-	}
-
-	if len(body) == 0 {
-		return nil, errors.New("body is empty")
-	}
-
-	return body, nil
+	GetFeeHistory() (feehistory.Result, error)
 }

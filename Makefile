@@ -2,7 +2,7 @@
 APP=eth-gas-watcher
 BIN="bin"
 
-.PHONY: clean bin build run test
+.PHONY: clean bin build run tidy test
 
 clean:
 	@rm -rf $(BIN)/$(APP)
@@ -17,5 +17,9 @@ build: bin
 run: build
 	@./$(BIN)/$(APP)
 
-test:
+tidy:
+	go mod tidy
+
+test: tidy
 	@richgo test -v ./...
+

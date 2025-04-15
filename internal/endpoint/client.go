@@ -2,6 +2,7 @@ package endpoint
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
@@ -62,24 +63,24 @@ func (client EndpointClient) Get(
 	return body, nil
 }
 
-func (client EndpointClient) PostWithPayload(
-
+func (client EndpointClient) MakeRequestWithPayload(
+	method string,
 	payload payload.Payload,
-) ([]byte, error) {
+) (*http.Request, error) {
 
-	payloadBytes, err := payload.MarshalJSON()
+	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
 		desist.Error("error marshaling payload", err)
 	}
 
 	payloadBuffer := bytes.NewBuffer(payloadBytes)
 
-	request, err := http.NewRequest("POST", client.URL, payloadBuffer)
+	request, err := http.NewRequest(method, client.URL, payloadBuffer)
 	if err != nil {
 		return nil, desist.Error("could not form request", err)
 	}
 
 	request.Header.Set("Content-Type", "application/json")
 
-	return client.Get(request)
+	return request, nil
 }

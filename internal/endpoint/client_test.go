@@ -3,14 +3,18 @@ package endpoint_test
 import (
 	"bytes"
 	"encoding/json"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/ianhecker/eth-gas-watcher/internal/endpoint"
+	"github.com/ianhecker/eth-gas-watcher/internal/endpoint/payload"
 )
 
 type handlerFunc func(w http.ResponseWriter, r *http.Request)
@@ -39,6 +43,25 @@ func MakeServerHandlerWithNoBody() handlerFunc {
 	}
 }
 
+func NewHTTPRequest(t *testing.T, method, url, message string) *http.Request {
+	payloadBytes, _ := json.Marshal(payload.MakePayload())
+	buffer := bytes.NewBuffer(payloadBytes)
+	request, err := http.NewRequest(method, url, buffer)
+	require.NoError(t, err)
+	request.Header.Set("Content-Type", "application/json")
+	return request
+}
+
+func NewHTTPResponse(t *testing.T) *http.Response {
+	return &http.Response{
+		Status:        "200 OK",
+		StatusCode:    http.StatusOK,
+		Body:          io.NopCloser(strings.NewReader("")),
+		Header:        make(http.Header),
+		ContentLength: int64(len("")),
+	}
+}
+
 func TestClient_Get(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 		expected := "hello world"
@@ -49,11 +72,7 @@ func TestClient_Get(t *testing.T) {
 
 		client := endpoint.NewEndpointClient(ts.URL)
 
-		in := bytes.NewBuffer([]byte("a request"))
-
-		request, err := http.NewRequest("GET", ts.URL, in)
-		require.NoError(t, err)
-
+		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 		response, err := client.Get(request)
 		require.Nil(t, err)
 
@@ -72,12 +91,9 @@ func TestClient_Get(t *testing.T) {
 		ts.Close()
 
 		client := endpoint.NewEndpointClient(ts.URL)
+		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
-		buffer := bytes.NewBuffer([]byte("a request"))
-		request, err := http.NewRequest("GET", ts.URL, buffer)
-		require.NoError(t, err)
-
-		_, err = client.Get(request)
+		_, err := client.Get(request)
 		assert.ErrorContains(t, err, "could not get")
 	})
 
@@ -89,12 +105,9 @@ func TestClient_Get(t *testing.T) {
 		defer ts.Close()
 
 		client := endpoint.NewEndpointClient(ts.URL)
+		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
-		buffer := bytes.NewBuffer([]byte("a request"))
-		request, err := http.NewRequest("GET", ts.URL, buffer)
-		require.NoError(t, err)
-
-		_, err = client.Get(request)
+		_, err := client.Get(request)
 		assert.ErrorContains(t, err, "status code not OK. Got: '404'")
 	})
 
@@ -104,12 +117,37 @@ func TestClient_Get(t *testing.T) {
 		defer ts.Close()
 
 		client := endpoint.NewEndpointClient(ts.URL)
+		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
-		buffer := bytes.NewBuffer([]byte("a request"))
-		request, err := http.NewRequest("GET", ts.URL, buffer)
-		require.NoError(t, err)
-
-		_, err = client.Get(request)
+		_, err := client.Get(request)
 		assert.ErrorContains(t, err, "body is empty")
 	})
+}
+
+func TestClient_MakeRequestWithPayload(t *testing.T) {
+	t.Run("happy path", func(t *testing.T) {
+		url := "url"
+		client := endpoint.NewEndpointClient(url)
+
+		method := http.MethodPost
+		payload := payload.MakePayload()
+
+		expectedPayload, err := json.Marshal(payload)
+		require.NoError(t, err)
+
+		request, err := client.MakeRequestWithPayload(method, payload)
+		assert.Nil(t, err)
+		assert.Equal(t, method, request.Method)
+		assert.Equal(t, url, request.URL.String())
+		assert.Equal(t, "application/json", request.Header.Get("Content-Type"))
+
+		requestBody, err := ioutil.ReadAll(request.Body)
+		require.NoError(t, err)
+		assert.Equal(t, expectedPayload, requestBody)
+	})
+
+	t.Run("", func(t *testing.T) {})
+	t.Run("", func(t *testing.T) {})
+	t.Run("", func(t *testing.T) {})
+	t.Run("", func(t *testing.T) {})
 }

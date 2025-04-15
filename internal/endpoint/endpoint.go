@@ -1,6 +1,7 @@
 package endpoint
 
 import (
+	"errors"
 	"io/ioutil"
 	"net/http"
 
@@ -24,7 +25,7 @@ func NewClient(url string) *Client {
 func (c Client) Get() ([]byte, error) {
 	resp, err := http.Get(c.URL)
 	if err != nil {
-		return nil, desist.Error("could not fetch endpoint", err)
+		return nil, desist.Error("could not get", err)
 	}
 	defer resp.Body.Close()
 
@@ -35,6 +36,10 @@ func (c Client) Get() ([]byte, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, desist.Error("could not read body", err)
+	}
+
+	if len(body) == 0 {
+		return nil, errors.New("body is empty")
 	}
 
 	return body, nil

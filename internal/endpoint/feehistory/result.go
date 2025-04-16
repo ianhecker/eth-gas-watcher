@@ -16,7 +16,7 @@ type Results struct {
 	Reward            [][]string `json:"reward"`
 }
 
-type BaseTen struct {
+type BaseTenResults struct {
 	BaseFeePerGas     []uint64
 	GasUsedRatio      []float64
 	BaseFeePerBlobGas []uint64
@@ -84,9 +84,13 @@ func ConvertHexToBaseTenArray(in []string, out *[]uint64) error {
 }
 
 func ConvertHexToBaseTen(in string, out *uint64) error {
+	if out == nil {
+		return fmt.Errorf("given nil pointer")
+	}
+
 	v, err := strconv.ParseUint(in, 0, 64)
 	if err != nil {
-		return fmt.Errorf("invalid hex %q: %w", in, err)
+		return fmt.Errorf("invalid hex: '%q': %w", in, err)
 	}
 	*out = v
 	return nil

@@ -11,34 +11,34 @@ import (
 	"github.com/ianhecker/eth-gas-watcher/internal/endpoint/payload"
 )
 
-type Client interface {
+type ClientInterface interface {
 	GetWithRequest(request *http.Request) ([]byte, error)
 	MakeRequestWithPayload(method string, payload payload.Payload) (*http.Request, error)
 }
 
-type EndpointClient struct {
+type Client struct {
 	HTTPClient
 	URL string
 }
 
-func NewEndpointClient(url string) Client {
-	return &EndpointClient{
+func NewClient(url string) ClientInterface {
+	return &Client{
 		&http.Client{},
 		url,
 	}
 }
 
-func NewEndpointClientFromRaw(
+func NewClientFromRaw(
 	client HTTPClient,
 	url string,
-) Client {
-	return &EndpointClient{
+) ClientInterface {
+	return &Client{
 		client,
 		url,
 	}
 }
 
-func (client EndpointClient) GetWithRequest(
+func (client Client) GetWithRequest(
 	request *http.Request,
 ) ([]byte, error) {
 	resp, err := client.Do(request)
@@ -63,7 +63,7 @@ func (client EndpointClient) GetWithRequest(
 	return body, nil
 }
 
-func (client EndpointClient) MakeRequestWithPayload(
+func (client Client) MakeRequestWithPayload(
 	method string,
 	payload payload.Payload,
 ) (*http.Request, error) {

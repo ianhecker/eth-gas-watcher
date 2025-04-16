@@ -70,7 +70,7 @@ func TestClient_Get(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(handler))
 		defer ts.Close()
 
-		client := endpoint.NewEndpointClient(ts.URL)
+		client := endpoint.NewClient(ts.URL)
 
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 		response, err := client.GetWithRequest(request)
@@ -90,7 +90,7 @@ func TestClient_Get(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(handler))
 		ts.Close()
 
-		client := endpoint.NewEndpointClient(ts.URL)
+		client := endpoint.NewClient(ts.URL)
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
 		_, err := client.GetWithRequest(request)
@@ -104,7 +104,7 @@ func TestClient_Get(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(handler))
 		defer ts.Close()
 
-		client := endpoint.NewEndpointClient(ts.URL)
+		client := endpoint.NewClient(ts.URL)
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
 		_, err := client.GetWithRequest(request)
@@ -116,7 +116,7 @@ func TestClient_Get(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(handler))
 		defer ts.Close()
 
-		client := endpoint.NewEndpointClient(ts.URL)
+		client := endpoint.NewClient(ts.URL)
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
 		_, err := client.GetWithRequest(request)
@@ -127,7 +127,7 @@ func TestClient_Get(t *testing.T) {
 func TestClient_MakeRequestWithPayload(t *testing.T) {
 	t.Run("happy path", func(t *testing.T) {
 		url := "url"
-		client := endpoint.NewEndpointClient(url)
+		client := endpoint.NewClient(url)
 
 		method := http.MethodPost
 		payload := payload.MakePayload()
@@ -147,7 +147,7 @@ func TestClient_MakeRequestWithPayload(t *testing.T) {
 	})
 
 	t.Run("bad method", func(t *testing.T) {
-		client := endpoint.NewEndpointClient("")
+		client := endpoint.NewClient("")
 
 		method := "bad method"
 		payload := payload.MakePayload()

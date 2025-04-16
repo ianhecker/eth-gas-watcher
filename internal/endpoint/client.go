@@ -21,7 +21,7 @@ type EndpointClient struct {
 	URL string
 }
 
-func NewEndpointClient(url string) *EndpointClient {
+func NewEndpointClient(url string) Client {
 	return &EndpointClient{
 		&http.Client{},
 		url,
@@ -31,7 +31,7 @@ func NewEndpointClient(url string) *EndpointClient {
 func NewEndpointClientFromRaw(
 	client HTTPClient,
 	url string,
-) *EndpointClient {
+) Client {
 	return &EndpointClient{
 		client,
 		url,

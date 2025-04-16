@@ -32,7 +32,7 @@ func TestDesistor_FatalOnError(t *testing.T) {
 		expected := errors.New("expected")
 
 		var called bool
-		fatalFunc := func(v ...any) {
+		fatalFunc := func(format string, v ...any) {
 			called = true
 		}
 
@@ -44,7 +44,7 @@ func TestDesistor_FatalOnError(t *testing.T) {
 
 	t.Run("happy path - error is nil", func(t *testing.T) {
 		var called bool
-		fatalFunc := func(v ...any) {
+		fatalFunc := func(format string, v ...any) {
 			called = true
 		}
 

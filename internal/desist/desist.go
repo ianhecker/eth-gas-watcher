@@ -2,9 +2,10 @@ package desist
 
 import (
 	"fmt"
+	"log"
 )
 
-func Error(msg string, a any) error {
+func Error(msg string, a ...any) error {
 	return fmt.Errorf("%s: '%v'", msg, a)
 }
 
@@ -17,15 +18,17 @@ type DesistInterface interface {
 
 type Desistor struct {
 	err   error
-	fatal func(v ...any)
+	fatal func(format string, v ...any)
 }
 
 func NewDesistor() DesistInterface {
-	return &Desistor{}
+	return &Desistor{
+		fatal: log.Fatalf,
+	}
 }
 
 func NewDesistorFromRaw(
-	fatalFunc func(v ...any),
+	fatalFunc func(format string, v ...any),
 ) DesistInterface {
 	return &Desistor{
 		fatal: fatalFunc,

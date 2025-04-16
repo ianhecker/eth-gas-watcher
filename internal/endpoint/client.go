@@ -12,8 +12,8 @@ import (
 )
 
 type Client interface {
-	GetWithRequest(http.Request) ([]byte, error)
-	MakeRequestWithPayload(payload.Payload) ([]byte, error)
+	GetWithRequest(*http.Request) ([]byte, error)
+	MakeRequestWithPayload(method string, payload payload.Payload) (*http.Request, error)
 }
 
 type EndpointClient struct {

@@ -6,6 +6,7 @@ package mocks
 
 import (
 	"github.com/ianhecker/eth-gas-watcher/internal/endpoint/feehistory"
+	"github.com/ianhecker/eth-gas-watcher/internal/endpoint/payload"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -37,25 +38,27 @@ func (_m *MockEndpointInterface) EXPECT() *MockEndpointInterface_Expecter {
 }
 
 // GetFeeHistory provides a mock function for the type MockEndpointInterface
-func (_mock *MockEndpointInterface) GetFeeHistory() (feehistory.Result, error) {
-	ret := _mock.Called()
+func (_mock *MockEndpointInterface) GetFeeHistory(payload1 payload.Payload) (*feehistory.Result, error) {
+	ret := _mock.Called(payload1)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetFeeHistory")
 	}
 
-	var r0 feehistory.Result
+	var r0 *feehistory.Result
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func() (feehistory.Result, error)); ok {
-		return returnFunc()
+	if returnFunc, ok := ret.Get(0).(func(payload.Payload) (*feehistory.Result, error)); ok {
+		return returnFunc(payload1)
 	}
-	if returnFunc, ok := ret.Get(0).(func() feehistory.Result); ok {
-		r0 = returnFunc()
+	if returnFunc, ok := ret.Get(0).(func(payload.Payload) *feehistory.Result); ok {
+		r0 = returnFunc(payload1)
 	} else {
-		r0 = ret.Get(0).(feehistory.Result)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*feehistory.Result)
+		}
 	}
-	if returnFunc, ok := ret.Get(1).(func() error); ok {
-		r1 = returnFunc()
+	if returnFunc, ok := ret.Get(1).(func(payload.Payload) error); ok {
+		r1 = returnFunc(payload1)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -68,23 +71,24 @@ type MockEndpointInterface_GetFeeHistory_Call struct {
 }
 
 // GetFeeHistory is a helper method to define mock.On call
-func (_e *MockEndpointInterface_Expecter) GetFeeHistory() *MockEndpointInterface_GetFeeHistory_Call {
-	return &MockEndpointInterface_GetFeeHistory_Call{Call: _e.mock.On("GetFeeHistory")}
+//   - payload1
+func (_e *MockEndpointInterface_Expecter) GetFeeHistory(payload1 interface{}) *MockEndpointInterface_GetFeeHistory_Call {
+	return &MockEndpointInterface_GetFeeHistory_Call{Call: _e.mock.On("GetFeeHistory", payload1)}
 }
 
-func (_c *MockEndpointInterface_GetFeeHistory_Call) Run(run func()) *MockEndpointInterface_GetFeeHistory_Call {
+func (_c *MockEndpointInterface_GetFeeHistory_Call) Run(run func(payload1 payload.Payload)) *MockEndpointInterface_GetFeeHistory_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run()
+		run(args[0].(payload.Payload))
 	})
 	return _c
 }
 
-func (_c *MockEndpointInterface_GetFeeHistory_Call) Return(result feehistory.Result, err error) *MockEndpointInterface_GetFeeHistory_Call {
+func (_c *MockEndpointInterface_GetFeeHistory_Call) Return(result *feehistory.Result, err error) *MockEndpointInterface_GetFeeHistory_Call {
 	_c.Call.Return(result, err)
 	return _c
 }
 
-func (_c *MockEndpointInterface_GetFeeHistory_Call) RunAndReturn(run func() (feehistory.Result, error)) *MockEndpointInterface_GetFeeHistory_Call {
+func (_c *MockEndpointInterface_GetFeeHistory_Call) RunAndReturn(run func(payload1 payload.Payload) (*feehistory.Result, error)) *MockEndpointInterface_GetFeeHistory_Call {
 	_c.Call.Return(run)
 	return _c
 }

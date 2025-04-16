@@ -70,7 +70,7 @@ func (client EndpointClient) MakeRequestWithPayload(
 
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
-		desist.Error("error marshaling payload", err)
+		desist.Error("could not marsha payload", err)
 	}
 
 	payloadBuffer := bytes.NewBuffer(payloadBytes)

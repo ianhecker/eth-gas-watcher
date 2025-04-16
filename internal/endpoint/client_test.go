@@ -146,8 +146,13 @@ func TestClient_MakeRequestWithPayload(t *testing.T) {
 		assert.Equal(t, expectedPayload, requestBody)
 	})
 
-	t.Run("", func(t *testing.T) {})
-	t.Run("", func(t *testing.T) {})
-	t.Run("", func(t *testing.T) {})
-	t.Run("", func(t *testing.T) {})
+	t.Run("bad method", func(t *testing.T) {
+		client := endpoint.NewEndpointClient("")
+
+		method := "bad method"
+		payload := payload.MakePayload()
+
+		_, err := client.MakeRequestWithPayload(method, payload)
+		assert.ErrorContains(t, err, "could not form request: 'net/http: invalid method \"bad method\"'")
+	})
 }

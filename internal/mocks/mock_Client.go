@@ -38,62 +38,6 @@ func (_m *MockClient) EXPECT() *MockClient_Expecter {
 	return &MockClient_Expecter{mock: &_m.Mock}
 }
 
-// GetWithPayload provides a mock function for the type MockClient
-func (_mock *MockClient) GetWithPayload(payload1 payload.Payload) ([]byte, error) {
-	ret := _mock.Called(payload1)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GetWithPayload")
-	}
-
-	var r0 []byte
-	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(payload.Payload) ([]byte, error)); ok {
-		return returnFunc(payload1)
-	}
-	if returnFunc, ok := ret.Get(0).(func(payload.Payload) []byte); ok {
-		r0 = returnFunc(payload1)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]byte)
-		}
-	}
-	if returnFunc, ok := ret.Get(1).(func(payload.Payload) error); ok {
-		r1 = returnFunc(payload1)
-	} else {
-		r1 = ret.Error(1)
-	}
-	return r0, r1
-}
-
-// MockClient_GetWithPayload_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetWithPayload'
-type MockClient_GetWithPayload_Call struct {
-	*mock.Call
-}
-
-// GetWithPayload is a helper method to define mock.On call
-//   - payload1
-func (_e *MockClient_Expecter) GetWithPayload(payload1 interface{}) *MockClient_GetWithPayload_Call {
-	return &MockClient_GetWithPayload_Call{Call: _e.mock.On("GetWithPayload", payload1)}
-}
-
-func (_c *MockClient_GetWithPayload_Call) Run(run func(payload1 payload.Payload)) *MockClient_GetWithPayload_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(payload.Payload))
-	})
-	return _c
-}
-
-func (_c *MockClient_GetWithPayload_Call) Return(bytes []byte, err error) *MockClient_GetWithPayload_Call {
-	_c.Call.Return(bytes, err)
-	return _c
-}
-
-func (_c *MockClient_GetWithPayload_Call) RunAndReturn(run func(payload1 payload.Payload) ([]byte, error)) *MockClient_GetWithPayload_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
 // GetWithRequest provides a mock function for the type MockClient
 func (_mock *MockClient) GetWithRequest(request http.Request) ([]byte, error) {
 	ret := _mock.Called(request)
@@ -146,6 +90,62 @@ func (_c *MockClient_GetWithRequest_Call) Return(bytes []byte, err error) *MockC
 }
 
 func (_c *MockClient_GetWithRequest_Call) RunAndReturn(run func(request http.Request) ([]byte, error)) *MockClient_GetWithRequest_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// MakeRequestWithPayload provides a mock function for the type MockClient
+func (_mock *MockClient) MakeRequestWithPayload(payload1 payload.Payload) ([]byte, error) {
+	ret := _mock.Called(payload1)
+
+	if len(ret) == 0 {
+		panic("no return value specified for MakeRequestWithPayload")
+	}
+
+	var r0 []byte
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(payload.Payload) ([]byte, error)); ok {
+		return returnFunc(payload1)
+	}
+	if returnFunc, ok := ret.Get(0).(func(payload.Payload) []byte); ok {
+		r0 = returnFunc(payload1)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]byte)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(payload.Payload) error); ok {
+		r1 = returnFunc(payload1)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockClient_MakeRequestWithPayload_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'MakeRequestWithPayload'
+type MockClient_MakeRequestWithPayload_Call struct {
+	*mock.Call
+}
+
+// MakeRequestWithPayload is a helper method to define mock.On call
+//   - payload1
+func (_e *MockClient_Expecter) MakeRequestWithPayload(payload1 interface{}) *MockClient_MakeRequestWithPayload_Call {
+	return &MockClient_MakeRequestWithPayload_Call{Call: _e.mock.On("MakeRequestWithPayload", payload1)}
+}
+
+func (_c *MockClient_MakeRequestWithPayload_Call) Run(run func(payload1 payload.Payload)) *MockClient_MakeRequestWithPayload_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(payload.Payload))
+	})
+	return _c
+}
+
+func (_c *MockClient_MakeRequestWithPayload_Call) Return(bytes []byte, err error) *MockClient_MakeRequestWithPayload_Call {
+	_c.Call.Return(bytes, err)
+	return _c
+}
+
+func (_c *MockClient_MakeRequestWithPayload_Call) RunAndReturn(run func(payload1 payload.Payload) ([]byte, error)) *MockClient_MakeRequestWithPayload_Call {
 	_c.Call.Return(run)
 	return _c
 }

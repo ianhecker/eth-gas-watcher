@@ -13,7 +13,7 @@ import (
 
 type Client interface {
 	GetWithRequest(http.Request) ([]byte, error)
-	GetWithPayload(payload.Payload) ([]byte, error)
+	MakeRequestWithPayload(payload.Payload) ([]byte, error)
 }
 
 type EndpointClient struct {
@@ -38,7 +38,7 @@ func NewEndpointClientFromRaw(
 	}
 }
 
-func (client EndpointClient) Get(
+func (client EndpointClient) GetWithRequest(
 	request *http.Request,
 ) ([]byte, error) {
 	resp, err := client.Do(request)

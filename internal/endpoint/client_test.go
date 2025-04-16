@@ -73,7 +73,7 @@ func TestClient_Get(t *testing.T) {
 		client := endpoint.NewEndpointClient(ts.URL)
 
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
-		response, err := client.Get(request)
+		response, err := client.GetWithRequest(request)
 		require.Nil(t, err)
 
 		out := bytes.NewBuffer(response)
@@ -93,7 +93,7 @@ func TestClient_Get(t *testing.T) {
 		client := endpoint.NewEndpointClient(ts.URL)
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
-		_, err := client.Get(request)
+		_, err := client.GetWithRequest(request)
 		assert.ErrorContains(t, err, "could not get")
 	})
 
@@ -107,7 +107,7 @@ func TestClient_Get(t *testing.T) {
 		client := endpoint.NewEndpointClient(ts.URL)
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
-		_, err := client.Get(request)
+		_, err := client.GetWithRequest(request)
 		assert.ErrorContains(t, err, "status code not OK. Got: '404'")
 	})
 
@@ -119,7 +119,7 @@ func TestClient_Get(t *testing.T) {
 		client := endpoint.NewEndpointClient(ts.URL)
 		request := NewHTTPRequest(t, "GET", ts.URL, "request")
 
-		_, err := client.Get(request)
+		_, err := client.GetWithRequest(request)
 		assert.ErrorContains(t, err, "body is empty")
 	})
 }

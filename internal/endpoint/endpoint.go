@@ -10,7 +10,7 @@ import (
 )
 
 type EndpointInterface interface {
-	GetFeeHistory(payload payload.Payload) (*feehistory.Result, error)
+	GetFeeHistory(payload payload.Payload) (*feehistory.Results, error)
 }
 
 type Endpoint struct {
@@ -26,7 +26,7 @@ func NewEndpointFromRaw(client ClientInterface) EndpointInterface {
 	return &Endpoint{client}
 }
 
-func (e Endpoint) GetFeeHistory(payload payload.Payload) (*feehistory.Result, error) {
+func (e Endpoint) GetFeeHistory(payload payload.Payload) (*feehistory.Results, error) {
 
 	request, err := e.MakeRequestWithPayload(http.MethodPost, payload)
 	if err != nil {

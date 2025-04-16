@@ -38,23 +38,23 @@ func (_m *MockEndpointInterface) EXPECT() *MockEndpointInterface_Expecter {
 }
 
 // GetFeeHistory provides a mock function for the type MockEndpointInterface
-func (_mock *MockEndpointInterface) GetFeeHistory(payload1 payload.Payload) (*feehistory.Result, error) {
+func (_mock *MockEndpointInterface) GetFeeHistory(payload1 payload.Payload) (*feehistory.Results, error) {
 	ret := _mock.Called(payload1)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetFeeHistory")
 	}
 
-	var r0 *feehistory.Result
+	var r0 *feehistory.Results
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(payload.Payload) (*feehistory.Result, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(payload.Payload) (*feehistory.Results, error)); ok {
 		return returnFunc(payload1)
 	}
-	if returnFunc, ok := ret.Get(0).(func(payload.Payload) *feehistory.Result); ok {
+	if returnFunc, ok := ret.Get(0).(func(payload.Payload) *feehistory.Results); ok {
 		r0 = returnFunc(payload1)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*feehistory.Result)
+			r0 = ret.Get(0).(*feehistory.Results)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(payload.Payload) error); ok {
@@ -83,12 +83,12 @@ func (_c *MockEndpointInterface_GetFeeHistory_Call) Run(run func(payload1 payloa
 	return _c
 }
 
-func (_c *MockEndpointInterface_GetFeeHistory_Call) Return(result *feehistory.Result, err error) *MockEndpointInterface_GetFeeHistory_Call {
+func (_c *MockEndpointInterface_GetFeeHistory_Call) Return(result *feehistory.Results, err error) *MockEndpointInterface_GetFeeHistory_Call {
 	_c.Call.Return(result, err)
 	return _c
 }
 
-func (_c *MockEndpointInterface_GetFeeHistory_Call) RunAndReturn(run func(payload1 payload.Payload) (*feehistory.Result, error)) *MockEndpointInterface_GetFeeHistory_Call {
+func (_c *MockEndpointInterface_GetFeeHistory_Call) RunAndReturn(run func(payload1 payload.Payload) (*feehistory.Results, error)) *MockEndpointInterface_GetFeeHistory_Call {
 	_c.Call.Return(run)
 	return _c
 }

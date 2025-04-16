@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func Error(msg string, a ...any) error {
+func Error(msg string, a any) error {
 	return fmt.Errorf("%s: '%v'", msg, a)
 }
 

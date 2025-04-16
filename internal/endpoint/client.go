@@ -12,7 +12,7 @@ import (
 )
 
 type Client interface {
-	GetWithRequest(*http.Request) ([]byte, error)
+	GetWithRequest(request *http.Request) ([]byte, error)
 	MakeRequestWithPayload(method string, payload payload.Payload) (*http.Request, error)
 }
 

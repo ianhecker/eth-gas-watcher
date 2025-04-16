@@ -44,7 +44,7 @@ func MakeServerHandlerWithNoBody() handlerFunc {
 }
 
 func NewHTTPRequest(t *testing.T, method, url, message string) *http.Request {
-	payloadBytes, _ := json.Marshal(payload.MakePayload())
+	payloadBytes, _ := json.Marshal(payload.MakePayload("method", []interface{}{}))
 	buffer := bytes.NewBuffer(payloadBytes)
 	request, err := http.NewRequest(method, url, buffer)
 	require.NoError(t, err)
@@ -130,7 +130,7 @@ func TestClient_MakeRequestWithPayload(t *testing.T) {
 		client := endpoint.NewClient(url)
 
 		method := http.MethodPost
-		payload := payload.MakePayload()
+		payload := payload.MakePayload("method", []interface{}{})
 
 		expectedPayload, err := json.Marshal(payload)
 		require.NoError(t, err)
@@ -150,7 +150,7 @@ func TestClient_MakeRequestWithPayload(t *testing.T) {
 		client := endpoint.NewClient("")
 
 		method := "bad method"
-		payload := payload.MakePayload()
+		payload := payload.MakePayload("method", []interface{}{})
 
 		_, err := client.MakeRequestWithPayload(method, payload)
 		assert.ErrorContains(t, err, "could not form request: 'net/http: invalid method \"bad method\"'")

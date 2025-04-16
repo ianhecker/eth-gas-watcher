@@ -1,16 +1,33 @@
 package payload
 
+import "fmt"
+
 type Payload map[string]interface{}
 
-func MakePayload() Payload {
-	return map[string]interface{}{
-		"jsonrpc": "2.0",
-		"id":      1,
-		"method":  "eth_feeHistory",
-		"params": []interface{}{
-			"0x5",             // Block count (hex encoded)
-			"latest",          // Newest block specifier
-			[]int{10, 50, 90}, // Reward percentiles
-		},
-	}
+var DefaultPayload = map[string]interface{}{
+	"jsonrpc": "2.0",
+	"id":      1,
+}
+
+func MakePayload(
+	method string,
+	params []interface{},
+) Payload {
+	payload := DefaultPayload
+	payload["method"] = method
+	payload["params"] = params
+	return payload
+}
+
+func MakePayloadForFeeHistory(
+	blockCount int,
+	newestBlock string,
+	rewardPercentiles []int,
+) Payload {
+	params := make([]interface{}, 3)
+	params[0] = fmt.Sprintf("%#x", blockCount)
+	params[1] = newestBlock
+	params[2] = rewardPercentiles
+
+	return MakePayload("eth_feeHistory", params)
 }
